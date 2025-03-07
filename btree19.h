@@ -34,6 +34,22 @@ Node *createBST()
     return root;
 }
 
+int search(Node *root, int data)
+{
+    if (root == NULL)
+    {
+        return 0;
+    }
+
+    if (root->data = data)
+    {
+        return 1;
+    }
+
+    search(root->left, data);
+    search(root->right, data);
+}
+
 void preorder(Node *root)
 {
     if (root == NULL)

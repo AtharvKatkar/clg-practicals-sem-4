@@ -11,7 +11,7 @@ void main()
 
     while (1)
     {
-        printf("\nSelect one\n\n1) Create BST\n2) Preorder\n3) Exit\n");
+        printf("\nSelect one\n\n1) Create BST\n2) Preorder\n3) Search item\n4) Exit\n");
         printf("Enter your choice: \n");
         scanf("%d", &ch);
 
@@ -32,6 +32,19 @@ void main()
             printf("\n");
             break;
         case 3:
+            printf("Enter key to search: \n");
+            int srcKey;
+            scanf("%d", &srcKey);
+            int srcOut = search(root, srcKey);
+            if (srcOut == 1)
+            {
+                printf("Key found \n");
+            }
+            else
+            {
+                printf("Key not found\n");
+            }
+        case 4:
             exit(0);
         default:
             printf("Invalid choice\n");
