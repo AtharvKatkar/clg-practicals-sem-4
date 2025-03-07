@@ -73,4 +73,3 @@ void inorder(Node *root)
     printf("%d ", root->data);
     inorder(root->right);
 }
-// tbh dhanashri is real gadahv aahe
