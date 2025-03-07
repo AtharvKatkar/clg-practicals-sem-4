@@ -73,3 +73,4 @@ void inorder(Node *root)
     printf("%d ", root->data);
     inorder(root->right);
 }
+//atharv gadahv aahe
