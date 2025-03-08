@@ -1,83 +1,91 @@
 // Write a C program that accepts the vertices and edges of a graph. Create adjacency list and
 // display the adjacency list.
-
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node
-{
-    int vertex;
-    struct Node *next;
+typedef struct Node {
+	int data;
+	struct Node* next;
 } Node;
 
-Node *createNode(int vertex)
-{
-    Node *newNode = (Node *)malloc(sizeof(Node));
-    newNode->vertex = vertex;
-    newNode->next = NULL;
-    return newNode;
+Node *createNode(int data){
+	Node *nn=(Node *)malloc(sizeof(Node));
+	nn->data=data;
+	nn->next=NULL;
+	return nn;
 }
 
-void addEdge(Node **adjacencyList, int source, int destination)
-{
-    Node *newNode = createNode(destination);
-
-    newNode->next = adjacencyList[source];
-    adjacencyList[source] = newNode;
+void attachNodes(Node *current, Node *next){
+	Node *temp=current;
+	
+	while(temp->next!=NULL){
+		temp=temp->next;
+	}
+	
+	temp->next=next;
 }
 
-void displayAdjacencyList(Node **adjacencyList, int numVertices)
-{
-    for (int i = 0; i < numVertices; i++)
-    {
-        printf("%d: ", i);
-        Node *temp = adjacencyList[i];
-        while (temp != NULL)
-        {
-            printf("%d -> ", temp->vertex);
-            temp = temp->next;
-        }
-        printf("NULL\n");
-    }
+void printLinkedList(Node *root){
+	Node *temp=root;
+	
+	while(temp!=NULL){
+		printf("%d -> ", temp->data);
+		temp=temp->next;
+	}
 }
 
-int main()
-{
-    int numVertices, numEdges;
-    printf("Enter the number of vertices: ");
-    scanf("%d", &numVertices);
-
-    Node **adjacencyList = (Node **)malloc(numVertices * sizeof(Node *));
-    for (int i = 0; i < numVertices; i++)
-    {
-        adjacencyList[i] = NULL;
-    }
-
-    printf("Enter the number of edges: ");
-    scanf("%d", &numEdges);
-
-    for (int i = 0; i < numEdges; i++)
-    {
-        int source, destination;
-        printf("Enter edge %d (source destination): ", i + 1);
-        scanf("%d %d", &source, &destination);
-        addEdge(adjacencyList, source, destination);
-    }
-
-    printf("Adjacency List:\n");
-    displayAdjacencyList(adjacencyList, numVertices);
-
-    for (int i = 0; i < numVertices; i++)
-    {
-        Node *temp = adjacencyList[i];
-        while (temp != NULL)
-        {
-            Node *next = temp->next;
-            free(temp);
-            temp = next;
-        }
-    }
-    free(adjacencyList);
-
-    return 0;
+void main(){
+	int v, data;
+	printf("Enter total count of vertices \n");
+	scanf("%d", &v);
+	
+	int m[v][v];
+	
+	printf("Enter adjacency matix: \n");
+	printf("Enter 1 for edge present and 0 for not present\n\n");
+	
+	for (int i=0; i<v; i++){
+		for (int j=0; j<v;j++){
+			printf("Is edge present between %d -> %d: ", i, j);
+			scanf("%d", &data);
+			m[i][j]=data;
+		}
+	}
+	
+	printf("Adjacency matrix entered: \n");
+	for (int i=0; i<v; i++){
+		for (int j=0; j<v;j++){
+			printf("%d\t", m[i][j]);
+		}
+		printf("\n");
+	}
+	
+	printf("Adjacency list: \n");
+	
+	Node *list[v];
+	
+	for (int i=0; i<v; i++){
+		Node *ln=createNode(i);
+		list[i]=ln;
+	}
+	
+	// Debug block
+	/* for (int i=0; i<v; i++){
+		printf("%d ->", list[i]->data);
+		printf("\n");
+	} */
+	
+	for (int i=0; i<v; i++){
+		for (int j=0; j<v;j++){
+			if(m[i][j]==1){
+				Node *ln=createNode(j);
+				attachNodes(list[i], ln);
+			}
+		}
+	}
+	
+	for (int i=0; i<v; i++){
+		printLinkedList(list[i]);
+		printf("\n");
+	}
 }
