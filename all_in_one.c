@@ -93,43 +93,74 @@ bool search(Node *root, int data)
     return right_found;
 }
 
+void printMenu()
+{
+    printf("BST menu driven program ;) \n\n Menu:\n");
+    printf("1) Insert data \n");
+    printf("2) Search tree \n");
+    printf("3) Count total nodes \n");
+    printf("4) Preorder \n");
+    printf("5) Inorder \n");
+    printf("6) Postorder \n");
+    printf("7) Exit \n\n");
+
+    printf("Enter your choice: ");
+}
+
 void main()
 {
     Node *root = NULL;
-    root = insert(root, 50);
-    insert(root, 30);
-    insert(root, 70);
-    insert(root, 20);
-    insert(root, 40);
-    insert(root, 60);
-    insert(root, 80);
+    int ch, data;
 
-    printf("Preorder \n");
-    preorder(root);
-    printf("\n");
+    while (1)
+    {
+        printMenu();
+        scanf("%d", &ch);
 
-    printf("Inorder \n");
-    inorder(root);
-    printf("\n");
+        switch (ch)
+        {
+        case 1:
+            printf("Enter data you want to insert: ");
+            scanf("%d", &data);
+            if (root == NULL)
+            {
+                root = insert(root, data);
+            }
+            insert(root, data);
+            printf("%d inserted to tree \n", data);
+            break;
+        case 2:
+            printf("Enter data you want to search in tree: ");
+            scanf("%d", &data);
+            bool found = search(root, data);
 
-    printf("Postorder \n");
-    postorder(root);
-    printf("\n");
-
-    bool searchRes1 = search(root, 10);
-    bool searchRes2 = search(root, 30);
-
-    printf("Search 10 and 30 in tree \n");
-    if (searchRes1 == true)
-        printf("10 found in tree \n");
-    else
-        printf("10 not found in tree \n");
-
-    if (searchRes2 == true)
-        printf("30 found in tree \n");
-    else
-        printf("30 not found in tree \n");
-
-    printf("Count total nodes in tree \n");
-    printf("Total node = %d", count(root));
+            if (found)
+                printf("%d found in the tree\n", data);
+            else
+                printf("%d not found\n", data);
+            break;
+        case 3:
+            printf("There are %d total nodes", count(root));
+            break;
+        case 4:
+            printf("Preorder \n");
+            preorder(root);
+            printf("\n");
+            break;
+        case 5:
+            printf("Inorder \n");
+            inorder(root);
+            printf("\n");
+            break;
+        case 6:
+            printf("Postorder \n");
+            postorder(root);
+            printf("\n");
+            break;
+        case 7:
+            exit(0);
+        default:
+            printf("!! Invalid choice selected !!");
+        }
+    }
 }
