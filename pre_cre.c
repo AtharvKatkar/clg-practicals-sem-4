@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include "slip_pre_cre_5.22.24.h"
+#include "pre_cre.h"
 
 void printMenu()
 {
@@ -35,7 +35,6 @@ void main()
             insert(root, data);
             printf("%d inserted to tree \n", data);
             break;
-        
 
         case 2:
             printf("preorder \n");
@@ -47,5 +46,6 @@ void main()
             exit(0);
         default:
             printf("!! Invalid choice selected !!");
-    }    }
+        }
+    }
 }
