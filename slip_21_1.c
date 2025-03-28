@@ -8,16 +8,15 @@ C program to implement graph traversal method using depth first search.
 int stack[100];
 int pt = -1;
 
-void push(int data)
+void push(int node)
 {
-    stack[pt++] = data;
+    stack[++pt] = node;
 }
 
 int pop()
 {
-    return stack[--pt];
+    return stack[pt--];
 }
-
 int checkInStack(int data)
 {
     for (int i = 0; i < pt; i++)
@@ -33,7 +32,6 @@ int checkInStack(int data)
 
 int dfs_stack(int n, int adj_matrix[n][n])
 {
-    printf("");
     int visited[n];
     int dfs_order[n];
     int dfs_index = 0;
