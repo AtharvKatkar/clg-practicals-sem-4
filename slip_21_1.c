@@ -3,53 +3,82 @@ C program to implement graph traversal method using depth first search.
 */
 
 #include <stdio.h>
-#include <stdlib.h>
+#include <limits.h>
 
-#define MAX_VERTICES 100
+int stack[100];
+int pt = -1;
 
-int graph[MAX_VERTICES][MAX_VERTICES];
-int visited[MAX_VERTICES];
-int num_vertices;
-
-void dfs(int start_vertex)
+void push(int data)
 {
-    visited[start_vertex] = 1;
-    printf("%d ", start_vertex);
-
-    for (int i = 0; i < num_vertices; i++)
-    {
-        if (graph[start_vertex][i] && !visited[i])
-        {
-            dfs(i);
-        }
-    }
+    stack[pt++] = data;
 }
 
-int main()
+int pop()
 {
-    int i, j;
+    return stack[--pt];
+}
 
-    printf("Enter the number of vertices: ");
-    scanf("%d", &num_vertices);
-
-    printf("Enter the adjacency matrix:\n");
-    for (i = 0; i < num_vertices; i++)
+int checkInStack(int data)
+{
+    for (int i = 0; i < pt; i++)
     {
-        for (j = 0; j < num_vertices; j++)
+        if (data == stack[i])
         {
-            scanf("%d", &graph[i][j]);
+            return 1;
         }
     }
-
-    printf("Depth-First Traversal: ");
-    for (i = 0; i < num_vertices; i++)
-    {
-        if (!visited[i])
-        {
-            dfs(i);
-        }
-    }
-    printf("\n");
 
     return 0;
+}
+
+int dfs_stack(int n, int adj_matrix[n][n])
+{
+    printf("");
+    int visited[n];
+    int dfs_order[n];
+    int dfs_index = 0;
+
+    push(0);
+    visited[0] = 1;
+
+    while (pt != -1)
+    {
+        int current = pop();
+        dfs_order[dfs_index++] = current;
+
+        for (int neighbor = 0; neighbor < n; neighbor++)
+        {
+            if (adj_matrix[current][neighbor] && !visited[neighbor])
+            {
+                push(neighbor);
+                visited[neighbor] = 1;
+            }
+        }
+    }
+
+    return dfs_index;
+}
+
+void main()
+{
+    int n;
+    printf("Enter total vertices: ");
+    scanf("%d", &n);
+
+    int m[n][n];
+    int visited[n];
+
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
+            scanf("%d", &m[i][j]);
+
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+            printf("%d\t", m[i][j]);
+        printf("\n");
+    }
+
+    // dfs start
+    dfs_stack(n, m);
 }
