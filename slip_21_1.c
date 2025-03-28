@@ -8,54 +8,105 @@ C program to implement graph traversal method using depth first search.
 int stack[100];
 int pt = -1;
 
-int dfs_order[];
+int visited[100];
+int vpt = 0;
 
-void push(int node)
+void push(int data)
 {
-    stack[++pt] = node;
+    printf("\nPush %d to stack\n", data);
+    stack[++pt] = data;
 }
 
 int pop()
 {
+    printf("\nPop %d from stack\n", stack[pt]);
     return stack[pt--];
 }
+
 int checkInStack(int data)
 {
+    int found = 0;
     for (int i = 0; i < pt; i++)
     {
         if (data == stack[i])
         {
-            return 1;
+            printf("\n%d found in stack\n", data);
+            found = 1;
+            break;
         }
     }
 
-    return 0;
+    return found;
 }
 
-int dfs_stack(int n, int adj_matrix[n][n])
+int checkVisited(int data)
 {
-    int visited[n];
-    int dfs_index = 0;
-
-    push(0);
-    visited[0] = 1;
-
-    while (pt != -1)
+    int found = 0;
+    for (int i = 0; i < vpt; i++)
     {
-        int current = pop();
-        dfs_order[dfs_index++] = current;
-
-        for (int neighbor = 0; neighbor < n; neighbor++)
+        if (data == visited[i])
         {
-            if (adj_matrix[current][neighbor] && !visited[neighbor])
-            {
-                push(neighbor);
-                visited[neighbor] = 1;
-            }
+            printf("\n%d found in visited\n", data);
+            found = 1;
+            break;
         }
     }
 
-    return dfs_index;
+    return found;
+}
+
+void pushVisited(int data)
+{
+    visited[vpt] = data;
+    vpt = vpt + 1;
+}
+
+void dfs(int n, int m[n][n])
+{
+    int key = pop();
+    if (pt == -1 && vpt == n)
+    {
+        printf("\n\n\n\nDFS for the graph is: \n");
+        for (int i = 0; i < vpt; i++)
+        {
+            printf("%d\t", visited[i]);
+        }
+        return;
+    }
+
+    if (pt == -1)
+    {
+        printf("\nOverflow!!!!!!!!!!\nChanging key if exists\n");
+        key = key + 1;
+    }
+
+    int adj[n];
+    int adjp = 0;
+    pushVisited(key);
+
+    for (int j = 0; j < n; j++)
+        if (m[key][j] == 1)
+        {
+            adj[adjp] = j;
+            adjp = adjp + 1;
+        }
+
+    printf("\nFor key=%d adjacent list is: \n", key);
+    for (int i = 0; i < adjp; i++)
+        printf("%d ", adj[i]);
+    printf("\n");
+
+    // push all adjacent items which are non duplicate nor visited to the stack
+    for (int i = 0; i < adjp; i++)
+    {
+        int element = adj[i];
+        if (checkInStack(element) == 0 && checkVisited(element) == 0)
+        {
+            push(element);
+        }
+    }
+
+    dfs(n, m);
 }
 
 void main()
@@ -63,13 +114,14 @@ void main()
     int n;
     printf("Enter total vertices: ");
     scanf("%d", &n);
+    n = 4;
 
-    int m[n][n];
-    int visited[n];
+    int m[4][4] = {{0, 0, 1, 0}, {1, 0, 1, 1}, {0, 0, 0, 0}, {0, 1, 0, 0}};
 
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++)
-            scanf("%d", &m[i][j]);
+    // Currently set to hardcode mode
+    // for (int i = 0; i < n; i++)
+    //     for (int j = 0; j < n; j++)
+    //         scanf("%d", &m[i][j]);
 
     for (int i = 0; i < n; i++)
     {
@@ -79,11 +131,7 @@ void main()
     }
 
     // dfs start
-    int dfs_order_length = dfs_stack(n, m);
-    printf("DFS Traversal Order: ");
-    for (int i = 0; i < dfs_order_length; i++)
-    {
-        printf("%d ", dfs_order[i]);
-    }
-    printf("\n");
+    visited[0] = 0;
+    push(0);
+    dfs(n, m);
 }
