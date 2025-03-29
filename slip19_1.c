@@ -69,12 +69,6 @@ void main(){
 		list[i]=ln;
 	}
 	
-	// Debug block
-	/* for (int i=0; i<v; i++){
-		printf("%d ->", list[i]->data);
-		printf("\n");
-	} */
-	
 	for (int i=0; i<v; i++){
 		for (int j=0; j<v;j++){
 			if(m[i][j]==1){
